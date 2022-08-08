@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
-import { MedicineService } from "./medicine.service";
+import { MedicineService } from "../medicine.service";
 
 @Component({
     templateUrl: './medicine-list.component.html',
     styleUrls: ['./medicine-list.component.css']
+
 })
 
 export class MedicineListComponent implements OnInit, OnDestroy {

@@ -1,0 +1,49 @@
+<div class="card border-light mb-3">
+    <div class="card-header text-center">
+        {{pageTitle}}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <div class="form-floating">
+                      <input type="text" [(ngModel)]="listFilter" class="form-control" id="floatingInputGroup1" placeholder="Filter by">
+                      <label for="floatingInputGroup1">Filter By</label>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-6">
+                <h4>Filtered by: {{listFilter}}</h4>
+            </div>
+        </div> -->
+        <br>
+        <div class="table-responsive" >
+            <table class="table table-borderless table-hover table caption-top align-middle" *ngIf='medicines.length'>
+                <caption>List of medicines</caption>
+                <thead class="table-light">
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Quantity</th>
+                        <th>Expiration</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr *ngFor="let medicine of filteredMedicines">
+                         <!-- <td>
+                            <a [routerLink]="['/products', product.productId]">
+                                {{product.productName}}
+                            </a>
+                        </td>  -->
+                        <td>{{medicine.medicineName}}</td>
+                        <td>{{medicine.quantity}}</td>
+                        <td>{{medicine.expiration | date: 'd MMMM, y'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+</div>

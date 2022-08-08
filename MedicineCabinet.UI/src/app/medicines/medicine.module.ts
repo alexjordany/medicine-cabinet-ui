@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { MedicineListComponent } from './medicines-list.component';
 import { DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MedicineListComponent } from './medicine-list/medicines-list.component';
 
 @NgModule({
     declarations:[
-        MedicineListComponent,
+        MedicineListComponent
     ],
     imports: [
         RouterModule.forChild([
