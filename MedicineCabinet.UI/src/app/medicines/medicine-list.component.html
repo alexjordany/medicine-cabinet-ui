@@ -1,0 +1,56 @@
+<div class="card">
+    <div class="card-header">
+        {{pageTitle}}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">Filter by:</div>
+            <div class="col-md-4">
+                <input type="text" [(ngModel)]="listFilter" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Filtered by: {{listFilter}}</h4>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table" *ngIf='medicines.length'>
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Quantity</th>
+                        <th>Expiration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let medicine of filteredMedicines">
+                         <!-- <td>
+                            <a [routerLink]="['/products', product.productId]">
+                                {{product.productName}}
+                            </a>
+                        </td>  -->
+                        <td>{{medicine.medicineName}}</td>
+                        <td>{{medicine.quantity}}</td>
+                        <td>{{medicine.expiration | date: 'd MMMM, y'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- <div>
+            <fast-data-grid  grid-template-columns="2fr 2fr 2fr" generate-header="none">
+                <fast-data-grid-row row-type="header">
+                    <fast-data-grid-cell grid-column="1" cell-type="columnheader">Medicine</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2" cell-type="columnheader">Quantity</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="3" cell-type="columnheader">Expiration</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row *ngFor="let medicine of filteredMedicines">
+                    <fast-data-grid-cell grid-column="1">{{medicine.medicineName}}</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">{{medicine.quantity}}</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="3">{{medicine.expiration | date: 'd MMMM, y'}}</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+    </div> -->
+
+</div>
