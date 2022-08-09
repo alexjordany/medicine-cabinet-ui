@@ -1,0 +1,46 @@
+<div class="card border-light mb-3" *ngIf="medicine">
+    <div class="card-header text-center">
+        {{pageTitle + ": " + medicine.medicineName}}
+    </div>
+
+    <div class="card-body" *ngIf="medicine">
+        <div class="form-floating mb-3">
+            <input type="text" readonly class="form-control-plaintext" id="name" placeholder="Name" value="{{medicine.medicineName}}">
+            <label for="name">Medicine name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="text" readonly class="form-control-plaintext" id="quantity" placeholder="Quantity" value="{{medicine.quantity}}">
+          <label for="name">Quantity</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="text" readonly class="form-control-plaintext" id="expiration" placeholder="Expiration date" value="{{medicine.expiration | date: 'MMMM d, y'}}">
+          <label for="name">Expiration</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <textarea type="text" 
+            readonly class="form-control-plaintext" 
+            id="description" 
+            placeholder="Description"
+            style="height: 100px"
+            value="{{medicine.description}}">
+          </textarea>
+          <label for="description">Description</label>
+        </div>
+    </div>
+    <div class="card-footer text-center">
+        <button class="btn btn-outline-secondary mr-3"
+                  style="width:500px"
+                  (click)="onBack()">
+            <i class="fa fa-chevron-left"></i> Back
+          </button>
+          &nbsp;
+          <button class="btn btn-outline-primary"
+                  style="width:500px"
+                  [routerLink]="['/medicines', medicine.medicineId, 'edit']">
+            Edit
+          </button>
+      </div>
+</div>

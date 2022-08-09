@@ -70,10 +70,8 @@ export class MedicineService{
             medicineId: 0,
             medicineName: '',
             quantity: 0,
-            expiration: new Date('2022-08-01T03:24:00'),
+            expiration: new Date('2022-08-31T03:24:00'),
             description: '',
-
-
         };
     }
 }
