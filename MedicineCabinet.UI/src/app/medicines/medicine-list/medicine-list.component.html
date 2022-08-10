@@ -13,11 +13,6 @@
                     </div>
                   </div>
             </div>
-            <div class="col-md-1">
-                <div>
-                    <button class="btn btn-primary" [routerLink]="['/medicines/0/edit']">Create Medicine</button>
-                </div>
-            </div>
         </div>
         <br>
         <div class="table-responsive" >
@@ -34,8 +29,8 @@
                 <tbody >
                     <tr *ngFor="let medicine of filteredMedicines">
                         <td>{{medicine.medicineName}}</td>
-                        <td>{{medicine.quantity}}</td>
-                        <td>{{medicine.expiration | date: 'd MMMM, y'}}</td>
+                        <td>{{medicine.medicineQuantity}}</td>
+                        <td>{{medicine.medicineExpiration| date: 'MMMM d, y'}}</td>
                         <td>
                               <button [routerLink]="['/medicines', medicine.medicineId]"class="btn btn-outline-primary"><i class="bi bi-info-square"></i>    Details</button>
                         </td>

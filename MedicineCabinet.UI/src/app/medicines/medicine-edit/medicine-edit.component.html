@@ -1,32 +1,31 @@
-<form novalidate (ngSubmit)="saveMedicine()" [formGroup]="medicineForm">
     <div class="card border-light">
         <div class="card-header">{{pageTitle}}</div>
-    
+        <form novalidate (ngSubmit)="saveMedicine()" [formGroup]="medicineForm">
         <div class="card-body">
             <div class="form-floating mb-4" style="width: 500px;">
-                <input type="text" class="form-control" id="name" placeholder="Medicine Name" formControlName="medicineName" [ngClass]="{'is-invalid': displayMessage.medicineName}">
-                <label for="name">Medicine Name</label>
+                <input type="text" class="form-control" id="medicineName" placeholder="Medicine Name" formControlName="medicineName" [ngClass]="{'is-invalid': displayMessage.medicineName}">
+                <label for="medicineName">Medicine Name</label>
                 <span class="invalid-feedback">
                     {{displayMessage.medicineName}}
                 </span>
             </div>
             
             <div class="form-floating mb-4" style="width: 500px;">
-                <input value="{{medicine.quantity}}" type="number" class="form-control" id="quantity" placeholder="Quantity" formControlName="medicineQuantity" [ngClass]="{'is-invalid': displayMessage.medicineQuantity}">
-                <label for="quantity">Quantity</label>
+                <input type="number" class="form-control" id="medicineQuantity" placeholder="Quantity" formControlName="medicineQuantity" [ngClass]="{'is-invalid': displayMessage.medicineQuantity}">
+                <label for="medicineQuantity">Quantity</label>
                 <span class="invalid-feedback">
                     {{displayMessage.medicineQuantity}}
-                  </span>
+                </span>
             </div>
 
             <div class="form-floating mb-4" style="width: 500px;">
-                <input value="{{medicine.expiration | date:'MM/dd/yyyy'}}" type="text" class="form-control" id="expiration" placeholder="test" formControlName="medicineExpiration">
-                <label for="expiration">Expiration: Month/Day/Year (12/31/2022)</label>
+                <input type="datetime-local"class="form-control" id="medicineExpiration" placeholder="test" formControlName="medicineExpiration">
+                <label for="medicineExpiration">Expiration: Year-month-day</label>
             </div>
 
             <div class="form-floating mb-4" style="width: 500px;">
-                <textarea type="text" class="form-control" id="description" placeholder="Medicine description" style="height: 150px;" formControlName="medicineDescription" [ngClass]="{'is-invalid': displayMessage.medicineDescription}"></textarea>
-                <label for="description">Description</label>
+                <textarea type="text" class="form-control" id="medicineDescription" placeholder="Medicine description" style="height: 150px;" formControlName="medicineDescription" [ngClass]="{'is-invalid': displayMessage.medicineDescription}"></textarea>
+                <label for="medicineDescription">Description</label>
                 <span class="invalid-feedback">
                     {{displayMessage.medicineDescription}
                 </span>
@@ -35,10 +34,21 @@
 
         <div class="card-footer">
             <div class="text-center">
-                <button class="btn btn-primary" style="width: 300px;" type="submit">Save</button>&nbsp;
+                <button class="btn btn-primary" style="width: 300px;" type="submit" [title]="medicineForm.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                [disabled]="!medicineForm.valid">Save</button>&nbsp;
                 <button class="btn btn-outline-secondary" style="width: 300px;" type="button" [routerLink]="['/medicines']">Cancel</button>&nbsp;
                 <button class="btn btn-outline-warning" style="width: 300px;" type="button" title="Delete this medicine" (click)="deleteMedicine()">Delete</button>
             </div>
         </div>
-    </div>
+
+        <div class="alert alert-danger"
+        *ngIf="errorMessage">{{errorMessage}}
+        
+   </div>
 </form>
+    </div>
+
+  
+    <div class="alert alert-danger"
+         *ngIf="errorMessage">{{errorMessage}}
+    </div>

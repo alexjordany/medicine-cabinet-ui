@@ -38,7 +38,7 @@ export class MedicineService{
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         const url = `${this.medicineUrl}/${medicine.medicineId}`;
         return this.http.put<IMedicine>(url, medicine, {headers}).pipe(
-            tap(() => console.log('updateMedicine: ' + medicine.medicineId)),
+            tap(() => console.log('updateMedicine: ' + medicine.medicineId, medicine.medicineDescription, medicine.medicineQuantity)),
             map(() => medicine),
             catchError(this.handleError)
         );
@@ -68,9 +68,9 @@ export class MedicineService{
         return {
             medicineId: 0,
             medicineName: '',
-            quantity: 0,
-            expiration: new Date('2022-08-23'),
-            description: '',
+            medicineQuantity: 0,
+            medicineExpiration: new Date('2022-08-23'),
+            medicineDescription: '',
         };
     }
 }

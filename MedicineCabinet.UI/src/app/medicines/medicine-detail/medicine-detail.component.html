@@ -10,12 +10,12 @@
         </div>
 
         <div class="form-floating mb-3">
-          <input type="text" readonly class="form-control-plaintext" id="quantity" placeholder="Quantity" value="{{medicine.quantity}}">
+          <input type="text" readonly class="form-control-plaintext" id="quantity" placeholder="Quantity" value="{{medicine.medicineQuantity}}">
           <label for="name">Quantity</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="text" readonly class="form-control-plaintext" id="expiration" placeholder="Expiration date" value="{{medicine.expiration | date: 'd MMMM, y'}}">
+          <input type="text" readonly class="form-control-plaintext" id="expiration" placeholder="Expiration date" value="{{medicine.medicineExpiration | date: 'MMMM d, y'}}">
           <label for="name">Expiration</label>
         </div>
 
@@ -25,7 +25,7 @@
             id="description" 
             placeholder="Description"
             style="height: 100px"
-            value="{{medicine.description}}">
+            value="{{medicine.medicineDescription}}">
           </textarea>
           <label for="description">Description</label>
         </div>

@@ -12,7 +12,7 @@ import { MedicineService } from '../medicine.service';
 export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(FormControlName, {read: ElementRef}) formInputElements!: ElementRef[];
 
-  pageTitle = 'Product Edit';
+  pageTitle = 'Medicine Edit';
   errorMessage= '';
   medicineForm!: FormGroup;
 
@@ -32,14 +32,14 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
       this.validationMessages = {
         medicineName: {
           required: 'medicine name is required.',
-          maxlength: 'Product name cannot exceed 35 characters.'
+          maxlength: 'Medicine name cannot exceed 35 characters.'
         },
         medicineQuantity: {
           required: 'medicine quantity is required',
           min: 'quantity must be at least 0'
         },
         medicineDescription: {
-          maxlength: 'Product name cannot exceed 150 characters.'
+          maxlength: 'Description name cannot exceed 150 characters.'
         }
     };
     this.genericValidator = new GenericValidator(this.validationMessages);
@@ -49,10 +49,9 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.medicineForm = this.fb.group({
       medicineName: ['', [Validators.required, Validators.maxLength(35)]],
       medicineQuantity: ['', [Validators.required]],
-      medicineExpiration: '',
+      medicineExpiration: [''],
       medicineDescription: ['', [Validators.maxLength(150)]]
     });
-
 
     this.sub = this.route.paramMap.subscribe(
       params => {
@@ -70,8 +69,6 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
       const controlBlurs: Observable<any>[] = this.formInputElements
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
-    // Merge the blur event observable with the valueChanges observable
-    // so we only need to subscribe once.
     merge(this.medicineForm.valueChanges, ...controlBlurs).pipe(
       debounceTime(800)
     ).subscribe(value => {
@@ -91,16 +88,16 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.medicine = medicine;
 
     if(this.medicine.medicineId === 0){
-      this.pageTitle = 'Add Product';
+      this.pageTitle = 'Add Medicine';
     } else {
-      this.pageTitle = `Edit Product: ${this.medicine.medicineName}`;
+      this.pageTitle = `Edit Medicine: ${this.medicine.medicineName}`;
     }
 
     this.medicineForm.patchValue({
       medicineName: this.medicine.medicineName,
-      medicineQuantity: this.medicine.quantity,
-      medicineExpiration: this.medicine.expiration,
-      medicineDescription: this.medicine.description
+      medicineQuantity: this.medicine.medicineQuantity,
+      medicineExpiration: this.medicine.medicineExpiration,
+      medicineDescription: this.medicine.medicineDescription
     });
   }
 
@@ -121,7 +118,8 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
         const p = {...this.medicine, ...this.medicineForm.value};
 
         if(p.medicineId === 0){
-          this.medicineService.createMedicine(p).subscribe({
+          this.medicineService.createMedicine(p)
+          .subscribe({
             next: x =>{
               console.log(x);
               return this.onSaveComplete();
@@ -139,20 +137,6 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } else{
       this.errorMessage = 'Please correct the validation errors.';
-    }
-    if(this.medicineForm.dirty){
-      const p = {...this.medicine, ...this.medicineForm.value};
-      if(p.medicine.medicineId === 0){
-        this.medicineService.createMedicine(p).subscribe({
-          next: () => this.onSaveComplete(),
-          error: err => this.errorMessage = err
-        })
-      } else {
-        this.medicineService.updateMedicine(p).subscribe({
-          next: () => this.onSaveComplete(),
-          error: err => this.errorMessage = err
-        });
-      }
     }
 }
 
