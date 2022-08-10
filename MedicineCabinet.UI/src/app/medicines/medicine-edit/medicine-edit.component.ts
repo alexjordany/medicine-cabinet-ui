@@ -10,7 +10,7 @@ import { IMedicine } from '../medicine';
 import { MedicineService } from '../medicine.service';
 
 @Component({
-  templateUrl: './medicine-edit.component.html',
+  templateUrl: './medicine-edit.component.html'
 })
 export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
@@ -80,23 +80,22 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   displayMedicine(medicine: IMedicine): void {
-    if (this.medicineForm) {
+    if(this.medicineForm){
       this.medicineForm.reset();
     }
     this.medicine = medicine;
 
-    if (this.medicine.medicineId === 0) {
-      this.pageTitle = 'Add Medicine';
+    if(this.medicine.medicineId === 0){
+      this.pageTitle = 'Add Product';
     } else {
-      this.pageTitle = `Edit Medicine: ${this.medicine.medicineName}`;
+      this.pageTitle = `Edit Product: ${this.medicine.medicineName}`;
     }
 
-    // Update the data on the form
     this.medicineForm.patchValue({
       medicineName: this.medicine.medicineName,
       medicineQuantity: this.medicine.quantity,
       medicineExpiration: this.medicine.expiration,
-      description: this.medicine.description
+      medicineDescription: this.medicine.description
     });
   }
 

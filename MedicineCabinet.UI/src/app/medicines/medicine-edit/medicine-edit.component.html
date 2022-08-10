@@ -1,0 +1,43 @@
+<form novalidate (ngSubmit)="saveMedicine()" [formGroup]="medicineForm">
+    <div class="card border-light">
+        <div class="card-header">{{pageTitle}}</div>
+    
+        <div class="card-body">
+            <div class="form-floating mb-4" style="width: 500px;">
+                <input type="text" class="form-control" id="name" placeholder="Medicine Name" formControlName="medicineName" [ngClass]="{'is-invalid': displayMessage.medicineName}">
+                <label for="name">Medicine Name</label>
+            </div>
+            <span class="invalid-feedback">
+                {{displayMessage.medicineName}}
+              </span>
+            <div class="form-floating mb-4" style="width: 500px;">
+                <input type="number" class="form-control" id="quantity" placeholder="Quantity" formControlName="medicineQuantity" [ngClass]="{'is-invalid': displayMessage.medicineQuantity}">
+                <label for="quantity">Quantity</label>
+            </div>
+            <span class="invalid-feedback">
+                {{displayMessage.medicineQuantity}}
+              </span>
+            <div class="form-floating mb-4" style="width: 500px;">
+                <input type="text" class="form-control" id="expiration" placeholder="test" formControlName="medicineExpiration">
+                <label for="expiration">Expiration: Month/Day/Year (12/31/2022)</label>
+            </div>
+            <div class="form-floating mb-4" style="width: 500px;">
+                <textarea type="text" class="form-control" id="description" placeholder="Medicine description" style="height: 150px;" formControlName="medicineDescription"></textarea>
+                <label for="description">Description</label>
+            </div>
+            <span class="invalid-feedback">
+                {{displayMessage.medicineDescription}
+            </span>
+        </div>
+
+        <div class="card-footer">
+            <div class="text-center">
+                <button class="btn btn-primary" style="width: 100px;" type="submit">Save</button>
+                <button class="btn btn-outline-secondary" style="width: 100px;" type="button" [routerLink]="['/medicines']">Cancel</button>
+                <button class="btn btn-outline-warning" style="width: 100px;" type="button" title="Delete this medicine" (click)="deleteMedicine()">Delete</button>
+            </div>
+        </div>
+
+
+    </div>
+</form>
