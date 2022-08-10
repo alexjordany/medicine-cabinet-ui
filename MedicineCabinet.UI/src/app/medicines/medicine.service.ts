@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
-import { IMedicine } from "./medicine-list/medicines-list.component";
 import { catchError, tap, map } from 'rxjs/operators';
+import { IMedicine } from './medicine';
 
 
 @Injectable({
@@ -64,13 +64,12 @@ export class MedicineService{
         return throwError(() => errorMessage);
       }
 
-
     private initializeMedicine(): IMedicine{
         return {
             medicineId: 0,
             medicineName: '',
             quantity: 0,
-            expiration: new Date('2022-08-31T03:24:00'),
+            expiration: new Date('2022-08-23'),
             description: '',
         };
     }

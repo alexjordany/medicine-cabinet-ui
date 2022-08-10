@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { MedicineService } from "../medicine.service";
+import { IMedicine } from '../medicine';
 
 @Component({
     templateUrl: './medicine-list.component.html',
@@ -51,16 +52,4 @@ export class MedicineListComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
-}
-
-
-
-
-
-export interface IMedicine {
-    medicineId: number;
-    medicineName: string;
-    quantity: number;
-    expiration: Date;
-    description: string;
 }

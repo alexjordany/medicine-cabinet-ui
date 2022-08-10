@@ -1,22 +1,19 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChildren } from '@angular/core';
+import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { Observable, Subscription, fromEvent, merge } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, fromEvent, merge, Observable, Subscription } from 'rxjs';
 import { GenericValidator } from 'src/app/shared/generic-validator';
-
 import { IMedicine } from '../medicine';
 import { MedicineService } from '../medicine.service';
 
 @Component({
-  templateUrl: './medicine-edit.component.html'
+  templateUrl: './medicine-edit.component.html',
 })
 export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
+  @ViewChildren(FormControlName, {read: ElementRef}) formInputElements!: ElementRef[];
 
-  pageTitle = 'Medicine Edit';
-  errorMessage = '';
+  pageTitle = 'Product Edit';
+  errorMessage= '';
   medicineForm!: FormGroup;
 
   medicine!: IMedicine;
@@ -26,18 +23,24 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
   private validationMessages: { [key: string]: { [key: string]: string } };
   private genericValidator: GenericValidator;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private medicineService: MedicineService) { 
-    this.validationMessages = {
-      medicineName: {
-        required: 'Medicine name is required.',
-        maxlength: 'Product name cannot exceed 35 characters.'
-      },
-      medicineQuantity: {
-        required: 'Quantity is required'
-      },
-      medicineDescription: {
-        maxlength: 'Product name cannot exceed 150 characters.'
-      }
+
+  constructor(private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private medicineService: MedicineService) { 
+
+      this.validationMessages = {
+        medicineName: {
+          required: 'medicine name is required.',
+          maxlength: 'Product name cannot exceed 35 characters.'
+        },
+        medicineQuantity: {
+          required: 'medicine quantity is required',
+          min: 'quantity must be at least 0'
+        },
+        medicineDescription: {
+          maxlength: 'Product name cannot exceed 150 characters.'
+        }
     };
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
@@ -46,20 +49,25 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.medicineForm = this.fb.group({
       medicineName: ['', [Validators.required, Validators.maxLength(35)]],
       medicineQuantity: ['', [Validators.required]],
-      medicineExpiration: ['', []],
+      medicineExpiration: '',
       medicineDescription: ['', [Validators.maxLength(150)]]
     });
 
-    this.sub = this.route.paramMap.subscribe(params =>{
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-    });
+
+    this.sub = this.route.paramMap.subscribe(
+      params => {
+        const id = Number(this.route.snapshot.paramMap.get('id'));
+        this.getMedicine(id);
+      }
+    );
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+      this.sub.unsubscribe();
   }
+
   ngAfterViewInit(): void {
-    const controlBlurs: Observable<any>[] = this.formInputElements
+      const controlBlurs: Observable<any>[] = this.formInputElements
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     // Merge the blur event observable with the valueChanges observable
@@ -73,10 +81,7 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getMedicine(id: number): void {
     this.medicineService.getMedicine(id)
-      .subscribe({
-        next: (medicine: IMedicine) => this.displayMedicine(medicine),
-        error: err => this.errorMessage = err
-      });
+    .subscribe({next:(medicine: IMedicine)=> this.displayMedicine(medicine), error: err => this.errorMessage = err});
   }
 
   displayMedicine(medicine: IMedicine): void {
@@ -100,51 +105,58 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteMedicine(): void {
-    if (this.medicine.medicineId === 0) {
-      // Don't delete, it was never saved.
+    if(this.medicine.medicineId === 0){
       this.onSaveComplete();
-    } else if (this.medicine.medicineId) {
-      if (confirm(`Really delete the product: ${this.medicine.medicineName}?`)) {
-        this.medicineService.deleteMedicine(this.medicine.medicineId)
-          .subscribe({
-            next: () => this.onSaveComplete(),
-            error: err => this.errorMessage = err
-          });
+    } else if(this.medicine.medicineId){
+      if(confirm(`Really delete this medicine: ${this.medicine.medicineName}?`)){
+        this.medicineService.deleteMedicine(this.medicine.medicineId).subscribe({next: () => this.onSaveComplete(),
+        error: err => this.errorMessage = err});
       }
     }
   }
 
   saveMedicine(): void {
-    if (this.medicineForm.valid) {
-      if (this.medicineForm.dirty) {
-        const m = { ...this.medicine, ...this.medicineForm.value };
+    if(this.medicineForm.valid){
+      if(this.medicineForm.dirty){
+        const p = {...this.medicine, ...this.medicineForm.value};
 
-        if (m.medicineId === 0) {
-          this.medicineService.createMedicine(m)
-            .subscribe({
-              next: x => {
-                console.log(x);
-                return this.onSaveComplete();
-              },
-              error: err => this.errorMessage = err
-            });
+        if(p.medicineId === 0){
+          this.medicineService.createMedicine(p).subscribe({
+            next: x =>{
+              console.log(x);
+              return this.onSaveComplete();
+            },
+            error: err => this.errorMessage = err
+          });
         } else {
-          this.medicineService.updateMedicine(m)
-            .subscribe({
-              next: () => this.onSaveComplete(),
-              error: err => this.errorMessage = err
-            });
+          this.medicineService.updateMedicine(p).subscribe({
+            next: () => this.onSaveComplete(),
+            error: err => this.errorMessage = err
+          });
         }
       } else {
         this.onSaveComplete();
       }
-    } else {
+    } else{
       this.errorMessage = 'Please correct the validation errors.';
     }
-  }
+    if(this.medicineForm.dirty){
+      const p = {...this.medicine, ...this.medicineForm.value};
+      if(p.medicine.medicineId === 0){
+        this.medicineService.createMedicine(p).subscribe({
+          next: () => this.onSaveComplete(),
+          error: err => this.errorMessage = err
+        })
+      } else {
+        this.medicineService.updateMedicine(p).subscribe({
+          next: () => this.onSaveComplete(),
+          error: err => this.errorMessage = err
+        });
+      }
+    }
+}
 
-  onSaveComplete(): void {
-    // Reset the form to clear the flags
+  onSaveComplete(): void{
     this.medicineForm.reset();
     this.router.navigate(['/medicines']);
   }
