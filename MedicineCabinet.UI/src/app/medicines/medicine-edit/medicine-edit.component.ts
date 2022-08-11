@@ -129,7 +129,7 @@ export class MedicineEditComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           this.medicineService.updateMedicine(p).subscribe({
             next: () => this.onSaveComplete(),
-            error: err => this.errorMessage = err
+            error: err => this.errorMessage = err 
           });
         }
       } else {
